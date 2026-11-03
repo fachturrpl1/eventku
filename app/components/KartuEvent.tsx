@@ -21,7 +21,7 @@ export default function KartuEvent({ event }: { event: Event }) {
         {sisa === 0 ? "Kuota Habis" : `Sisa ${sisa} kuota`}
       </p>
       <Link
-        href={`/event/${event.id}`}
+        href={`/events/${event.id}`}
         className="mt-3 inline-block rounded bg-blue-700 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
       >
         Lihat Detail

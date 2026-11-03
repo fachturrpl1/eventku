@@ -1,16 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function TombolFavorit({ id }: { id: number }) {
-    const [favorit, setFavorit] = useState(false);
-
-    useEffect(() => {
-        const simpan: number[] =JSON.parse(localStorage.getItem("favorit") ?? "[]");
-
-        //eslint-disable-next-line react-hooks/setState-in-effect
-        setFavorit(simpan.includes(id));
-    }, [id]);
+    const [favorit, setFavorit] = useState(() => {
+        if (typeof window === "undefined") return false;
+        const simpan: number[] = JSON.parse(localStorage.getItem("favorit") ?? "[]");
+        return simpan.includes(id);
+    });
 
     function ubah() {
         const simpan: number[] = JSON.parse(localStorage.getItem("favorit") ?? "[]");
@@ -23,6 +20,5 @@ export default function TombolFavorit({ id }: { id: number }) {
         <button onClick={ubah} className="mt-3 rounded border px-3 py-1.5 text-sm">
             {favorit ? " ♥ Favorit" : " ♡ Tambah favorit"}
         </button>
-
-    )
+    );
 }

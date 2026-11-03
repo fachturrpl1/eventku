@@ -1,7 +1,6 @@
 import Link from "next/dist/client/link";
 import { events } from '@/data/events'
 import KartuEvent from '@/app/components/KartuEvent';
-import { event } from "next/dist/build/output/log";
 
 export default function Beranda() {
   const terdekat =  events.slice(0, 3);

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const menu = [
     { href: "/", teks: "Beranda" },
-    { href: "/event", teks: "Event" },
+    { href: "/events", teks: "Event" },
     { href: "/tentang", teks: "Tentang" },
     { href: "/kontak", teks: "Kontak" },
 ];

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { events, rupiah } from "@/data/events";
+import FormPesan from "@/app/components/FormPesan"
 import Link from "next/link";
 
 export default async function Detail({ params }: PageProps<"/events/[id]">) {
@@ -21,9 +22,10 @@ export default async function Detail({ params }: PageProps<"/events/[id]">) {
       <p className="text-slate-600">
         Sisa {sisa} dari {event.kuota} tiket
       </p>
-      <Link href="/event" className="text-blue-600 hover:underline">
+      <Link href="/events" className="text-blue-600 hover:underline">
         Kembali ke Katalog
       </Link>
+      <FormPesan event={event}/>
     </article>
   );
 }

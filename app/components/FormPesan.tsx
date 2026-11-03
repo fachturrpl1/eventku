@@ -15,7 +15,7 @@ export default function FormPesan({event} : {event: Event}) {
         setBerhasil(false);
         if (nama.trim().length < 3) return setPesan("Nama minimal 3 huruf.");
         if (jumlah < 1) return setPesan("Jumlah tiket minimal 1.");
-        if (jumlah > sisa) return setPesan('Sisa tiket hanya ${sisa}.');
+        if (jumlah > sisa) return setPesan(`Sisa tiket hanya ${sisa}.`);
         setPesan("");
         setBerhasil(true);
     }
@@ -50,10 +50,10 @@ export default function FormPesan({event} : {event: Event}) {
             {pesan && <p className="text-red-600">{pesan}</p>}
             {berhasil && (
                 <p className="text-green-700">
-                    Terimakasih {nama}! {jumlah} tket dipesan (belum tersimpan, ini masih latihan)
+                    Terimakasih {nama}! {jumlah} tiket dipesan (belum tersimpan, ini masih latihan)
                 </p>
             )}
-            <button className="rounded bg-bllur-600 px-4 text-white hoer:bg-blue-700">
+            <button className="rounded bg-blue-600 px-4 text-white hoer:bg-blue-700">
                 Pesan
             </button>
         </form>

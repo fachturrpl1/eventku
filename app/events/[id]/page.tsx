@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { events, rupiah } from "@/data/events";
 import FormPesan from "@/app/components/FormPesan"
+import TombolFavorit from "@/app/components/TombolFavorit"
+import { events, rupiah } from "@/data/events";
 import Link from "next/link";
 
 export default async function Detail({ params }: PageProps<"/events/[id]">) {
@@ -25,6 +26,7 @@ export default async function Detail({ params }: PageProps<"/events/[id]">) {
       <Link href="/events" className="text-blue-600 hover:underline">
         Kembali ke Katalog
       </Link>
+      <TombolFavorit id={event.id}/>
       <FormPesan event={event}/>
     </article>
   );

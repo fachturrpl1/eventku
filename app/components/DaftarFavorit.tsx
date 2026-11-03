@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from 'next/link';
-import type { Event } from '@/data/events'
+import { rupiah,type Event } from '@/data/events'
 
 export default function DaftarFavorit() {
     const [ semua, setSemua ] = useState<Event[]>([]);
@@ -33,10 +33,14 @@ export default function DaftarFavorit() {
     return (
         <ul className="space-y-2">
             {daftar.map((e) => (
-                <li key={e.id}>
+                <li
+                    key={e.id}
+                    className="flex justify-between items-center"
+                >
                     <Link href={`/events/${e.id}`} className="text-blue-600 hover:underline">
                     {e.judul}
                     </Link>
+                    <span className="p-1 text-slate-600 fotn-medium">{rupiah(e.harga)}</span>
                 </li>
             ))}
         </ul>

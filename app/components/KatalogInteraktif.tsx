@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { rupiah, type Event } from "@/data/events";
 import KartuEvent from "./KartuEvent";
+import KontrolKatalog from "./KontrolKatalog";
 
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
@@ -44,49 +45,20 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap gap-3">
-        <input
-          value={cari}
-          onChange={(e) => setCari(e.target.value)}
-          placeholder="Cari event..."
-          className="rounded border bg-white px-3 py-2"
-        />
-        <select
-          value={kategori}
-          onChange={(e) => setKategori(e.target.value)}
-          className="rounded border bg-white px-3 py-2"
-        >
-          {daftarKategori.map((k) => (
-            <option key={k}>{k}</option>
-          ))}
-        </select>
-        <select
-          value={urut}
-          onChange={handleUrutChange}
-          className="rounded border bg-white px-3 py-2"
-        >
-          <option value="tanggal">Tanggal terdekat</option>
-          <option value="murah">Harga termurah</option>
-          <option value="mahal">Harga termahal</option>
-          <option value="nama">Nama A-Z</option>
-        </select>
-        
-        <div className="w-full">
-          <p className="text-sm text-slate-500">{tersusun.length} event ditemukan</p>
-          <p className="text-sm text-slate-700 font-medium">
-            Rata-rata harga {rupiah(rataRataHarga)} Total sisa tiket {totalSisaTiket}
-          </p>
-        </div>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={adaTiket}
-            onChange={(e) => setAdaTiket(e.target.checked)}
-          />
-          Hanya yang masih ada tiket.
-        </label>
-      </div>
+      <KontrolKatalog
+        cari={cari}
+        setCari={setCari}
+        kategori={kategori}
+        setKategori={setKategori}
+        urut={urut}
+        handleUrutChange={handleUrutChange}
+        adaTiket={adaTiket}
+        setAdaTiket={setAdaTiket}
+        daftarKategori={daftarKategori}
+        jumlahDitemukan={tersusun.length}
+        rataRataHargaText={rupiah(rataRataHarga)}
+        totalSisaTiket={totalSisaTiket}
+      />
       
       {tersusun.length === 0 ? (
         <p className="text-slate-500">Tidak ada event yang cocok.</p>

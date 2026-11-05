@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <footer className="border-t bg-white p-4 text-center text-sm text-slate-500">
-          EventKu | dibuat di kelas Junior Web Developer
+          EventKu • dibuat di kelas Junior Web Developer
         </footer>
       </body>
     </html>

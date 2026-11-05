@@ -7,8 +7,21 @@ import KartuEvent from "./KartuEvent";
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
   const [kategori, setKategori] = useState("Semua");
-  const [urut, setUrut] = useState(localStorage.getItem('urut') ?? 'tanggal');
+  
+  const [urut, setUrut] = useState(() => {
+    if (typeof window === "undefined") return "tanggal";
+    return localStorage.getItem("urut") ?? "tanggal";
+  });
+  
   const [adaTiket, setAdaTiket] = useState(false);
+
+  const handleUrutChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const nilaiBaru = e.target.value;
+    setUrut(nilaiBaru);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("urut", nilaiBaru);
+    }
+  };
 
   const daftarKategori = ["Semua", ...new Set(events.map((e) => e.kategori))];
   const hasil = events.filter(
@@ -49,7 +62,7 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
         </select>
         <select
           value={urut}
-          onChange={(e) => setUrut(e.target.value)}
+          onChange={handleUrutChange}
           className="rounded border bg-white px-3 py-2"
         >
           <option value="tanggal">Tanggal terdekat</option>

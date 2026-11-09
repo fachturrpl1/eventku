@@ -3,8 +3,8 @@ import { useActionState, useState } from "react";
 import { pesanTiket, type HasilPesan } from "@/app/actions";
 import { rupiah, type Event } from "@/data/events";
 
-export default function FormPesan({ event }: { event: Event }) {
-  const awal: HasilPesan = { berhasil: false, pesan: "", galat: {}, isian: { nama: "", email: "" } };
+export default function FormPesan({ event, namaAwal }: { event: Event; namaAwal: string }) {
+  const awal: HasilPesan = { berhasil: false, pesan: "", galat: {}, isian: { nama: namaAwal, email: "" } };
   const [hasil, kirim, sedangKirim] = useActionState(pesanTiket, awal);
   const [jumlah, setJumlah] = useState(1);
   const sisa = event.kuota - event.terisi;

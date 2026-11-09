@@ -14,7 +14,8 @@ export const pesanan: Pesanan[] = [];
 
 let nomorTerakhir = 0;
 
-export function tambahPesanan(data: Onit<Pesanan, 'nomor'>) {
+// Perbaiki Onit menjadi Omit di sini
+export function tambahPesanan(data: Omit<Pesanan, 'nomor'>) {
     nomorTerakhir += 1;
     pesanan.unshift({ nomor:  nomorTerakhir, ...data})
     return nomorTerakhir;

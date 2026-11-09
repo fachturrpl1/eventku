@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { rupiah, type Event } from "@/data/events";
 import KartuEvent from "./KartuEvent";
 import KontrolKatalog from "./KontrolKatalog";
@@ -8,17 +8,16 @@ import KontrolKatalog from "./KontrolKatalog";
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
   const [kategori, setKategori] = useState("Semua");
-  const [urut, setUrut] = useState("tanggal");
+  const [urut, setUrut] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('urut') || 'terbaru';
+    }
+    return 'terbaru';
+  });
+
   const [adaTiket, setAdaTiket] = useState(false);
 
   const daftarKategori = ["Semua", ...Array.from(new Set(events.map((e) => e.kategori)))];
-
-  useEffect(() => {
-    const nilaiSimpanan = localStorage.getItem("urut");
-    if (nilaiSimpanan) {
-      setUrut(nilaiSimpanan);
-    }
-  }, []);
 
   const handleUrutChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const nilaiBaru = e.target.value;

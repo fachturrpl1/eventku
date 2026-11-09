@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import { notFound } from "next/navigation";
 import FormPesan from "@/app/components/FormPesan";
 import TombolFavorit from "@/app/components/TombolFavorit";
@@ -9,6 +10,7 @@ interface PageProps {
 }
 
 export default async function Detail({ params }: PageProps) {
+  const namaAwal = (await cookies()).get('nama')?.value ?? '';
   const { id } = await params;
   const event = events.find((e) => e.id === Number(id));
   if (!event) notFound();
@@ -34,7 +36,7 @@ export default async function Detail({ params }: PageProps) {
       </p>
       
       <TombolFavorit id={event.id} />
-      <FormPesan event={event} />
+      <FormPesan event={event} namaAwal={namaAwal}/>
 
       <div className="mt-8 border-t pt-4">
         <h3 className="mb-2 text-lg font-semibold">Event Terkait</h3>

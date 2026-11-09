@@ -8,7 +8,8 @@ import KontrolKatalog from "./KontrolKatalog";
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
   const [kategori, setKategori] = useState("Semua");
-  
+  const daftarKategori = ["Semua", ...Array.from(new Set(events.map((e) => e.kategori)))];
+
   const [urut, setUrut] = useState(() => {
     if (typeof window === "undefined") return "tanggal";
     return localStorage.getItem("urut") ?? "tanggal";
@@ -24,7 +25,7 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
     }
   };
 
-  const daftarKategori = ["Semua", ...new Set(events.map((e) => e.kategori))];
+
   const hasil = events.filter(
     (e) =>
       e.judul.toLowerCase().includes(cari.toLowerCase()) &&

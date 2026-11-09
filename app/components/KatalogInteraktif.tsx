@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { rupiah, type Event } from "@/data/events";
 import KartuEvent from "./KartuEvent";
 import KontrolKatalog from "./KontrolKatalog";
@@ -8,14 +8,17 @@ import KontrolKatalog from "./KontrolKatalog";
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
   const [kategori, setKategori] = useState("Semua");
+  const [urut, setUrut] = useState("tanggal");
+  const [adaTiket, setAdaTiket] = useState(false);
+
   const daftarKategori = ["Semua", ...Array.from(new Set(events.map((e) => e.kategori)))];
 
-  const [urut, setUrut] = useState(() => {
-    if (typeof window === "undefined") return "tanggal";
-    return localStorage.getItem("urut") ?? "tanggal";
-  });
-  
-  const [adaTiket, setAdaTiket] = useState(false);
+  useEffect(() => {
+    const nilaiSimpanan = localStorage.getItem("urut");
+    if (nilaiSimpanan) {
+      setUrut(nilaiSimpanan);
+    }
+  }, []);
 
   const handleUrutChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const nilaiBaru = e.target.value;
@@ -25,7 +28,6 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
     }
   };
 
-
   const hasil = events.filter(
     (e) =>
       e.judul.toLowerCase().includes(cari.toLowerCase()) &&
@@ -34,8 +36,8 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
   );
 
   const tersusun = [...hasil].sort((a, b) => {
-    if (urut === 'murah') return a.harga - b.harga;
-    if (urut === 'mahal') return b.harga - a.harga;
+    if (urut === "murah") return a.harga - b.harga;
+    if (urut === "mahal") return b.harga - a.harga;
     if (urut === "nama") return a.judul.localeCompare(b.judul);
     return a.tanggal.localeCompare(b.tanggal);
   });

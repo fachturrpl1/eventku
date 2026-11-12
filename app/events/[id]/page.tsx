@@ -2,12 +2,12 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { rupiah } from "@/data/events";
-import { ambilEvents } from "@/data/ambil";
+import { ambilEvent } from "@/data/ambil";
 import FormPesan from "@/components/FormPesan";
 import TombolFavorit from "@/components/TombolFavorit";
 import EventTerkait from "@/components/EventTerkait";
 
-export default async function Detail({ params }: PageProps<"/event/[id]">) {
+export default async function Detail({ params }: PageProps<"/events/[id]">) {
     const { id } = await params;
     const event = await ambilEvent(Number(id));
     if (!event) notFound();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Tambahkan useEffect
 import { rupiah, type Event } from "@/data/events";
 import KartuEvent from "./KartuEvent";
 import KontrolKatalog from "./KontrolKatalog";
@@ -8,12 +8,17 @@ import KontrolKatalog from "./KontrolKatalog";
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
   const [kategori, setKategori] = useState("Semua");
-  const [urut, setUrut] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('urut') || 'terbaru';
+  
+  // 1. Set default awal selalu 'terbaru' untuk menyamakan server & client saat render pertama
+  const [urut, setUrut] = useState("terbaru");
+
+  // 2. Ambil dari localStorage setelah komponen terpasang di browser
+  useEffect(() => {
+    const nilaiSimpanan = localStorage.getItem('urut');
+    if (nilaiSimpanan) {
+      setUrut(nilaiSimpanan);
     }
-    return 'terbaru';
-  });
+  }, []);
 
   const [adaTiket, setAdaTiket] = useState(false);
 

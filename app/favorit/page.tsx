@@ -1,4 +1,4 @@
-import DaftarFavorit from "@/app/components/DaftarFavorit";
+import DaftarFavorit from "@/components/DaftarFavorit";
 
 export default function Favorit() {
     return (

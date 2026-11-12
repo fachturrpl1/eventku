@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"; // Tambahkan useEffect
+import { useState } from "react";
 import { rupiah, type Event } from "@/data/events";
 import KartuEvent from "./KartuEvent";
 import KontrolKatalog from "./KontrolKatalog";
@@ -9,21 +9,17 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
   const [kategori, setKategori] = useState("Semua");
   
-  // 1. Set default awal selalu 'terbaru' untuk menyamakan server & client saat render pertama
-  const [urut, setUrut] = useState("terbaru");
-
-  // 2. Ambil dari localStorage setelah komponen terpasang di browser
-  useEffect(() => {
-    const nilaiSimpanan = localStorage.getItem('urut');
-    if (nilaiSimpanan) {
-      setUrut(nilaiSimpanan);
+  // Inisialisasi aman dari localStorage, beri fallback ke 'terbaru'
+  const [urut, setUrut] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("urut") || "terbaru";
     }
-  }, []);
+    return "terbaru";
+  });
 
   const [adaTiket, setAdaTiket] = useState(false);
 
-  const daftarKategori = ["Semua", ...Array.from(new Set(events.map((e) => e.kategori)))];
-
+  // Simpan ke localStorage setiap kali state 'urut' berubah lewat Handler
   const handleUrutChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const nilaiBaru = e.target.value;
     setUrut(nilaiBaru);
@@ -31,6 +27,8 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
       localStorage.setItem("urut", nilaiBaru);
     }
   };
+
+  const daftarKategori = ["Semua", ...Array.from(new Set(events.map((e) => e.kategori)))];
 
   const hasil = events.filter(
     (e) =>

@@ -7,7 +7,10 @@ function jeda(ms : number) {
 }
 
 export async function ambilEvents(): Promise<Event[]> {
-    const { data, error } = await supabase.from('events').select('*').order('tanggal');
+    const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('harga', { ascending: false});
     if (error) throw new Error('Gagal memuat event: ' + error.message);
 
     return data as Event[];

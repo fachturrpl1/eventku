@@ -1,11 +1,12 @@
 import Link from "next/dist/client/link";
-import { events } from '@/data/events'
+import { ambilEvents } from '@/data/ambil'
 import KartuEvent from '@/components/KartuEvent';
 
-export default function Beranda() {
-  const terdekat =  events.slice(0, 3);
+export default async function Beranda() {
+  const semua = await ambilEvents();
+  const terdekat =  semua.slice(0, 3); //slice untuk mengambil index slice(start, end)
   return (
-    <div className="">
+    <div>
       <section className="py-12 text-center">
         <h1 className="text-4xl font-bold">Temukan event seru di sekolahmu</h1>
         <p className="mt-3 text-slate-600">

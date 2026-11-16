@@ -3,6 +3,12 @@ import { cookies } from 'next/headers';
 import { pesanan } from '@/data/pesanan';
 import { rupiah } from '@/data/events';
 import { batalkanTiket } from '@/app/actions';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Daftar Pesanan'
+};
+
 
 export default async function HalamanPesanan() {
     const namaCookie = (await cookies()).get("nama")?.value ?? "";

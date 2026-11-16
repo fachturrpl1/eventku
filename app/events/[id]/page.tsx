@@ -1,11 +1,23 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
-import { rupiah } from "@/data/events";
+import { events, rupiah } from "@/data/events";
 import { ambilEvent } from "@/data/ambil";
 import FormPesan from "@/components/FormPesan";
 import TombolFavorit from "@/components/TombolFavorit";
 import EventTerkait from "@/components/EventTerkait";
+import Image from 'next/image'
+import { type Metadata} from 'next'
+
+export async function generateMetadata({params} : PageProps<'/events/[id]'>): Promise<Metadata> {
+    const { id } = await params;
+    const event = events.find((e)=> e.id === Number(id));
+    if (!event) return { title: 'Event tidak ditemukan' };
+    return {
+        title: event.judul,
+        description: `${event.kategori} di ${event.lokasi}, ${event.tanggal}. ${rupiah(event.harga)}.`,
+    };
+}
 
 export default async function Detail({ params }: PageProps<"/events/[id]">) {
     const { id } = await params;
@@ -16,6 +28,16 @@ export default async function Detail({ params }: PageProps<"/events/[id]">) {
     const namaAwal = (await cookies()).get("nama")?.value ?? "";
     return (
         <article className="rounded-xl border bg-white p-6">
+            <div className="relative mb-4 aspect-[40/21] w-full">
+            <Image 
+                src={event.gambar ?? 'img/default.png'}
+                alt={event.judul}
+                fill
+                sizes='(max-width: 1024px) 100vw, 960px'
+                preload
+                className="rounded-lg object-cover"
+            />
+            </div>
             <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
                 {event.kategori}
             </span>

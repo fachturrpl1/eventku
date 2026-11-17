@@ -1,54 +1,38 @@
-import React from "react";
+import Form from "next/form";
+import Link from "next/link";
+import type { Saringan } from "@/data/saring";
 
-interface KontrolKatalogProps {
-  cari: string;
-  setCari: (val: string) => void;
-  kategori: string;
-  setKategori: (val: string) => void;
-  urut: string;
-  handleUrutChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  adaTiket: boolean;
-  setAdaTiket: (val: boolean) => void;
+type Props = {
+  s: Saringan;
   daftarKategori: string[];
-  jumlahDitemukan: number;
-  rataRataHargaText: string;
-  totalSisaTiket: number;
-}
+};
 
-export default function KontrolKatalog({
-  cari,
-  setCari,
-  kategori,
-  setKategori,
-  urut,
-  handleUrutChange,
-  adaTiket,
-  setAdaTiket,
-  daftarKategori,
-  jumlahDitemukan,
-  rataRataHargaText,
-  totalSisaTiket,
-}: KontrolKatalogProps) {
+export default function KontrolKatalog({ s, daftarKategori }: Props) {
   return (
-    <div className="mb-4 flex flex-wrap gap-3">
+    <Form action="/events" className="mb-4 flex flex-wrap items-center gap-3">
       <input
-        value={cari}
-        onChange={(e) => setCari(e.target.value)}
+        type="search"
+        name="cari"
+        defaultValue={s.cari}
         placeholder="Cari event..."
         className="rounded border bg-white px-3 py-2"
       />
+
       <select
-        value={kategori}
-        onChange={(e) => setKategori(e.target.value)}
+        name="kategori"
+        defaultValue={s.kategori}
         className="rounded border bg-white px-3 py-2"
       >
         {daftarKategori.map((k) => (
-          <option key={k}>{k}</option>
+          <option key={k} value={k}>
+            {k}
+          </option>
         ))}
       </select>
+
       <select
-        value={urut}
-        onChange={handleUrutChange}
+        name="urut"
+        defaultValue={s.urut}
         className="rounded border bg-white px-3 py-2"
       >
         <option value="tanggal">Tanggal terdekat</option>
@@ -56,22 +40,31 @@ export default function KontrolKatalog({
         <option value="mahal">Harga termahal</option>
         <option value="nama">Nama A-Z</option>
       </select>
-      
-      <div className="w-full">
-        <p className="text-sm text-slate-500">{jumlahDitemukan} event ditemukan</p>
-        <p className="text-sm text-slate-700 font-medium">
-          Rata-rata harga {rataRataHargaText} Total sisa tiket {totalSisaTiket}
-        </p>
-      </div>
 
       <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={adaTiket}
-          onChange={(e) => setAdaTiket(e.target.checked)}
-        />
-        Hanya yang masih ada tiket.
+        <input type="checkbox" name="sisa" value="1" defaultChecked={s.sisa} />
+        Hanya yang masih ada tiket
       </label>
-    </div>
+
+      <input
+        type="number"
+        name="max"
+        min={0}
+        defaultValue={s.max ?? ""}
+        placeholder="Harga maksimal"
+        className="w-40 rounded border bg-white px-3 py-2"
+      />
+
+      <button
+        type="submit"
+        className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+      >
+        Terapkan
+      </button>
+
+      <Link href="/events" className="text-sm text-slate-500 underline">
+        Reset
+      </Link>
+    </Form>
   );
 }

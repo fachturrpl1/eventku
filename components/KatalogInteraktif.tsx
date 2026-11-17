@@ -1,75 +1,46 @@
 "use client";
 
-import { useState } from "react";
-import { rupiah, type Event } from "@/data/events";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { type Event } from "@/data/events";
+import { type Saringan, alamatHalaman } from "@/data/saring";
 import KartuEvent from "./KartuEvent";
 import KontrolKatalog from "./KontrolKatalog";
 
-export default function KatalogInteraktif({ events }: { events: Event[] }) {
-  const [cari, setCari] = useState("");
-  const [kategori, setKategori] = useState("Semua");
-  
-  // Inisialisasi aman dari localStorage, beri fallback ke 'terbaru'
-  const [urut, setUrut] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("urut") || "terbaru";
-    }
-    return "terbaru";
-  });
+type Props = {
+  events: Event[];
+  saringanAwal: Saringan;
+  semuaEvent: Event[];
+};
 
-  const [adaTiket, setAdaTiket] = useState(false);
+export default function KatalogInteraktif({ events, saringanAwal, semuaEvent }: Props) {
+  const router = useRouter();
+  const [teksCari] = useState(saringanAwal.cari);
 
-  // Simpan ke localStorage setiap kali state 'urut' berubah lewat Handler
-  const handleUrutChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const nilaiBaru = e.target.value;
-    setUrut(nilaiBaru);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("urut", nilaiBaru);
-    }
+  const updateFilter = (kunciBaru: Partial<Saringan>) => {
+    const saringanBaru: Saringan = { ...saringanAwal, ...kunciBaru, hal: 1 };
+    router.replace(alamatHalaman(saringanBaru, saringanBaru.hal), { scroll: false });
   };
 
-  const daftarKategori = ["Semua", ...Array.from(new Set(events.map((e) => e.kategori)))];
+  // Debounce: tunggu 400 ms setelah pengguna berhenti mengetik
+  useEffect(() => {
+    if (teksCari === saringanAwal.cari) return;
+    const timer = setTimeout(() => updateFilter({ cari: teksCari }), 400);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teksCari]);
 
-  const hasil = events.filter(
-    (e) =>
-      e.judul.toLowerCase().includes(cari.toLowerCase()) &&
-      (kategori === "Semua" || e.kategori === kategori) &&
-      (!adaTiket || e.kuota - e.terisi > 0),
-  );
-
-  const tersusun = [...hasil].sort((a, b) => {
-    if (urut === "murah") return a.harga - b.harga;
-    if (urut === "mahal") return b.harga - a.harga;
-    if (urut === "nama") return a.judul.localeCompare(b.judul);
-    return a.tanggal.localeCompare(b.tanggal);
-  });
-
-  const totalSisaTiket = tersusun.reduce((acc, e) => acc + (e.kuota - e.terisi), 0);
-  const totalHarga = tersusun.reduce((acc, e) => acc + e.harga, 0);
-  const rataRataHarga = tersusun.length > 0 ? totalHarga / tersusun.length : 0;
+  const daftarKategori = ["Semua", ...Array.from(new Set(semuaEvent.map((e) => e.kategori)))];
 
   return (
     <div>
-      <KontrolKatalog
-        cari={cari}
-        setCari={setCari}
-        kategori={kategori}
-        setKategori={setKategori}
-        urut={urut}
-        handleUrutChange={handleUrutChange}
-        adaTiket={adaTiket}
-        setAdaTiket={setAdaTiket}
-        daftarKategori={daftarKategori}
-        jumlahDitemukan={tersusun.length}
-        rataRataHargaText={rupiah(rataRataHarga)}
-        totalSisaTiket={totalSisaTiket}
-      />
-      
-      {tersusun.length === 0 ? (
+      <KontrolKatalog s={saringanAwal} daftarKategori={daftarKategori} />
+
+      {events.length === 0 ? (
         <p className="text-slate-500">Tidak ada event yang cocok.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tersusun.map((e) => (
+          {events.map((e) => (
             <KartuEvent key={e.id} event={e} />
           ))}
         </div>

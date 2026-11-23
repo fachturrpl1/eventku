@@ -1,14 +1,14 @@
 import Link from "next/dist/client/link";
-import { ambilEvents } from '@/data/ambil'
-import KartuEvent from '@/components/KartuEvent';
+import { ambilEvents } from "@/data/ambil";
+import KartuEvent from "@/components/KartuEvent";
 
 export default async function Beranda() {
   const semua = await ambilEvents();
-  const terdekat =  semua.slice(0, 3); //slice untuk mengambil index slice(start, end)
+  const terdekat = semua.slice(0, 3); //slice untuk mengambil index slice(start, end)
   return (
     <div>
       <section className="py-12 text-center">
-        <h1 className="text-4xl font-bold">Temukan event seru di sekolahmu</h1>
+        <h1 className="text-4xl font-bold">Temukan seru di sekolahmu</h1>
         <p className="mt-3 text-slate-600">
           Workshop, lomba, musik, dan bazar. Pesan tiketnya di sini.
         </p>
@@ -22,10 +22,9 @@ export default async function Beranda() {
       <h2 className="mb-3 text-xl font-semubold">Event terdekat</h2>
       <div className="grid-4 sm:grid-cols-2 lg:grid-cols-3">
         {terdekat.map((e) => (
-          <KartuEvent key={e.id} event={e}/>
+          <KartuEvent key={e.id} event={e} />
         ))}
       </div>
     </div>
   );
 }
-

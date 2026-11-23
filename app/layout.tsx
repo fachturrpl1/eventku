@@ -21,7 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="id"
       className="antialiased"
     >
-      <body className={`${poppins.className} flex min-h-screen flex-col bg-slate-50 text-salte-880`}>
+      <body className={`${poppins.className} flex min-h-screen flex-col bg-slate-50 text-slate-880`}>
         <Navbar />
         <main className="mx-auto max-w-5xl flex-1 p-6">
           {children}

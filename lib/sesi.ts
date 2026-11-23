@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 export const NAMA_COOKIE = "admin_sesi";
 export const UMUR_SESI = 60 * 60 * 8; //8 jam
 
-// tanda tanganL hanya server yang tahu SESSION_SECRET, jadi cookie tidak bisa dipalsukan.
-async function tandantangani(isi: string) {
+// tanda tangan: hanya server yang tahu SESSION_SECRET, jadi cookie tidak bisa dipalsukan.
+async function tandatangani(isi: string) {
   const kunci = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(process.env.SESSION_SECRET!),
@@ -25,7 +25,7 @@ async function tandantangani(isi: string) {
 
 export async function buatToken() {
   const habis = String(Date.now() + UMUR_SESI * 1000);
-  return `$(habis).${await tandantangani(habis)}`;
+  return `${habis}.${await tandatangani(habis)}`;
 }
 
 export async function tokenSah(token: string | undefined) {
@@ -33,7 +33,7 @@ export async function tokenSah(token: string | undefined) {
   const [habis, tanda] = token.split(".");
   if (!habis || !tanda) return false;
   if (!(Number(habis) > Date.now())) return false; //sudah kadaluarsa atau bukan angka
-  return tanda === (await tandantangani(habis));
+  return tanda === (await tandatangani(habis));
 }
 
 // dipanggil di awal setiap dan server action admin. proxy.ts saja tidak cukup

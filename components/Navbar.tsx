@@ -10,6 +10,7 @@ const menu = [
     { href: "/kontak", teks: "Kontak" },
     { href: '/favorit', teks: "Favorit"},
     { href: '/pesanan', teks: 'Pesanan'},
+    { href: '/admin', teks: 'Admin'}
 ];
 
 export default function Navbar() {
@@ -25,7 +26,7 @@ export default function Navbar() {
                 href={m.href}
                 className={
                     pathname === m.href
-                    ? "font-semibolf text-blue-600"
+                    ? "font-semibold text-blue-600"
                     : "text-slate-600 hover:text-blue-600"
                 }
             >

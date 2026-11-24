@@ -19,8 +19,8 @@ export default async function Beranda() {
           Lihat semua event
         </Link>
       </section>
-      <h2 className="mb-3 text-xl font-semubold">Event terdekat</h2>
-      <div className="grid-4 sm:grid-cols-2 lg:grid-cols-3">
+      <h2 className="mb-3 text-xl font-semibold">Event terdekat</h2>
+      <div className="gap-3 grid sm:grid-cols-2 lg:grid-cols-3">
         {terdekat.map((e) => (
           <KartuEvent key={e.id} event={e} />
         ))}
